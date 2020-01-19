@@ -1,0 +1,21 @@
+.btn-setpoint{
+    top: 37%;
+    position: absolute;
+    z-index: 9;
+    background-color: black;
+    color: turquoise;
+    border: none;
+    font-size: 20px;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    &:focus{
+        outline: none;
+    }
+}
+.btn-increase{
+    left: 40%;
+}
+.btn-decrease{
+    right: 40%;
+}

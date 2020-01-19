@@ -1,8 +1,9 @@
-import React, {Component, useRef} from 'react';
+import React, {Component} from 'react';
 import ThermostatScreen from '../components/ThermostatScreen/ThermostatScreen';
 import SetPointControl from '../components/SetPointControl/SetPointControl';
 import getThermostatData from '../utils/getThermostatData';
 import patchThermostatData from '../utils/patchThermostatData';
+import './App.scss';
 
 class App extends Component{
     state = {
@@ -11,6 +12,8 @@ class App extends Component{
         timestamp: 0,
         intervalId: ''
     }
+    lastPromise = React.createRef();
+    
     componentDidMount(){
         this.callThermostatFetch();
         let intervalId = setInterval(this.callThermostatFetch, 2000);
@@ -25,7 +28,6 @@ class App extends Component{
             if(response.status === 200){
                 const thermostat = {...response.data};
                 if(this.state.currentSetpoint !== null){
-                    console.log('current Setpoint',thermostat.currentSetpoint);
                     this.setState({
                         currentTemp: thermostat.currentTemp,
                         timestamp: thermostat.timestamp
@@ -49,18 +51,16 @@ class App extends Component{
         })
     }
     callThermostatPatch = (updatedCurrentSetpoint) => {
-        let canceled = false;
-        patchThermostatData(updatedCurrentSetpoint)
+        const currentPromise = patchThermostatData(updatedCurrentSetpoint)
         .then((response) => {
-            if(!canceled){
-                console.log(canceled,'was I called race condition');
-                //this.callThermostatFetch();
+            if(currentPromise === this.lastPromise.current){
+                this.callThermostatFetch();
             }
         })
         .catch((error) => {
             console.log(error);
         });
-        return (canceled = true);
+        this.lastPromise.current = currentPromise;
     }
     increaseTempHandler = () => {
         const currentSetpoint = this.state.currentSetpoint;
@@ -72,28 +72,17 @@ class App extends Component{
         const decreaseSetPoint = currentSetpoint - 0.5;
         this.setState({currentSetpoint: decreaseSetPoint});
     }
-    lastPromise = React.createRef();
+    
     componentDidUpdate(prevProps, prevState){
         if(prevState.currentSetpoint !== this.state.currentSetpoint){
             console.log(this.lastPromise);
-        const currentPromise = patchThermostatData(this.state.currentSetpoint)
-        .then((response) => {
-            if(currentPromise === this.lastPromise.current){
-                console.log('was I called race condition');
-                this.callThermostatFetch();
-            }
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-        this.lastPromise.current = currentPromise;
-        console.log(this.lastPromise,'setting last promise');
+            this.callThermostatPatch(this.state.currentSetpoint);
         }
     }
     render(){
         return(
             <div>
-                <h1>Thermostat</h1>
+                <h1 className="header-title">Thermostat</h1>
                 <ThermostatScreen 
                 currentSetpoint = {this.state.currentSetpoint}
                 currentTemp = {this.state.currentTemp}
