@@ -8,8 +8,8 @@ const port = 9090;
 app.use(bodyParser.json());
 app.use(cors());
 
-app.get('/', ThermostatController.fetch);
-app.patch('/', ThermostatController.update);
+app.get('/thermostat', ThermostatController.fetch);
+app.patch('/thermostat', ThermostatController.update);
 
 // start the Express server
 app.listen(port, () => {

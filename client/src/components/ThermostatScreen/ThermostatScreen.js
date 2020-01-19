@@ -2,12 +2,12 @@ import React from 'react';
 //TO:DO : Proptypes
 //css
 
-const ThermostatScreen = ({display}) =>{
+const ThermostatScreen = (props) =>{
     return(
         <div>
-            Current Set Point: {display.currentSetpoint}
-            Current current Temperature: {display.currentTemp}
-            Current Update Time: {display.timestamp}
+            Current Set Point: {props.currentSetpoint}
+            Current current Temperature: {props.currentTemp}
+            Current Update Time: {props.timestamp}
         </div>
     )
 }

@@ -33,11 +33,11 @@ the API will start at http://localhost:9090
 This will spin up a node express server for the API.
 There are 2 endpoints for this api.
 
-| url                    | method |
-| ---------------------- | ------ |
-| http://localhost:9090/ | GET    |
-| http://localhost:9090/ | PATCH  |
-|                        |        |
+| url                               | method |
+| ----------------------------------| ------ |
+| http://localhost:9090/thermostat  | GET    |
+| http://localhost:9090/thermostat  | PATCH  |
+|                                   |        |
 
 ### Client
 
