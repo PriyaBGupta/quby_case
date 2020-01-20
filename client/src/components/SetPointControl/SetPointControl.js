@@ -1,7 +1,6 @@
 import React from 'react';
 import './SetPointControl.scss';
-//TODO : prototypes
-//css
+import PropTypes from 'prop-types';
 
 const SetPointControl = (props) =>{
     return (
@@ -11,4 +10,10 @@ const SetPointControl = (props) =>{
         </div>
     )
 }
+
+SetPointControl.propTypes = {
+    increase: PropTypes.func.isRequired,
+    decrease: PropTypes.func.isRequired
+}
+
 export default SetPointControl;

@@ -1,7 +1,6 @@
 import React from 'react';
 import './ThermostatScreen.scss';
-//TO:DO : Proptypes
-//css
+import Proptypes from 'prop-types'; 
 
 const ThermostatScreen = (props) =>{
     return(
@@ -27,4 +26,11 @@ const ThermostatScreen = (props) =>{
         </div>
     )
 }
+ThermostatScreen.prototypes = {
+    currentTemp: Proptypes.number.isRequired,
+    currentSetpoint: Proptypes.number.isRequired,
+    timestamp: Proptypes.instanceOf(Date).isRequired
+    
+}
+
 export default ThermostatScreen;
