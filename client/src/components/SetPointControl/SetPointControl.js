@@ -5,8 +5,8 @@ import PropTypes from 'prop-types';
 const SetPointControl = (props) =>{
     return (
         <div>
-        <button onClick={props.increase} className="btn-setpoint btn-increase">+</button>
-        <button onClick={props.decrease} className="btn-setpoint btn-decrease">-</button>
+            <button onClick={props.increase} className="btn-setpoint btn-increase">+</button>
+            <button onClick={props.decrease} className="btn-setpoint btn-decrease">-</button>
         </div>
     )
 }
