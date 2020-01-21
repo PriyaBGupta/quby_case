@@ -1,5 +1,5 @@
 import axios from 'axios';
-import * as urlName from './urlThermostat';
+import * as urlName from '../urlThermostat';
 
 const patchThermostatData = (currentSetpoint) => {
     const patchData = {currentSetpoint}

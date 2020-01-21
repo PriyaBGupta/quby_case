@@ -1,14 +1,17 @@
+@import '../../utils/shared-variable.scss';
+
 .btn-setpoint{
-    top: 37%;
+    top: 38%;
     position: absolute;
     z-index: 9;
-    background-color: black;
-    color: turquoise;
+    background-color: $black;
+    color: $turquoise;
     border: none;
     font-size: 20px;
     width: 35px;
     height: 35px;
     border-radius: 50%;
+    cursor: pointer;
     &:focus{
         outline: none;
     }
@@ -18,4 +21,28 @@
 }
 .btn-decrease{
     right: 40%;
+}
+@media screen and (max-width: 576px) {
+    .btn-increase{
+        left: 10%;
+    }
+    .btn-decrease{
+        right: 10%;
+    }
+}
+@media screen and (min-width:577px )and (max-width: 768px) {
+    .btn-increase{
+        left: 30%;
+    }
+    .btn-decrease{
+        right: 30%;
+    }
+}
+@media screen and (min-width:769px ) and (max-width: 1200px) {
+    .btn-increase{
+        left: 36%;
+    }
+    .btn-decrease{
+        right: 36%;
+    }
 }

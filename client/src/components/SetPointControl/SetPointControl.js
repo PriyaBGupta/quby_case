@@ -1,13 +1,13 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import './SetPointControl.scss';
 import PropTypes from 'prop-types';
 
 const SetPointControl = (props) =>{
     return (
-        <div>
+        <Fragment>
             <button onClick={props.increase} className="btn-setpoint btn-increase">+</button>
             <button onClick={props.decrease} className="btn-setpoint btn-decrease">-</button>
-        </div>
+        </Fragment>
     )
 }
 

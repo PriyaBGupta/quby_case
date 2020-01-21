@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import ThermostatScreen from '../components/ThermostatScreen/ThermostatScreen';
 import SetPointControl from '../components/SetPointControl/SetPointControl';
-import getThermostatData from '../utils/getThermostatData';
-import patchThermostatData from '../utils/patchThermostatData';
+import getThermostatData from '../utils/getThermostatData/getThermostatData';
+import patchThermostatData from '../utils/patchThermostatData/patchThermostatData';
 import './App.scss';
 
 class App extends Component{
@@ -10,7 +10,8 @@ class App extends Component{
         currentSetpoint: null,
         currentTemp: 0,
         timestamp: 0,
-        intervalId: ''
+        intervalId: '',
+        error: false
     }
     lastPromise = React.createRef();
     
@@ -30,24 +31,26 @@ class App extends Component{
                 if(this.state.currentSetpoint !== null){
                     this.setState({
                         currentTemp: thermostat.currentTemp,
-                        timestamp: thermostat.timestamp
+                        timestamp: thermostat.timestamp,
+                        error: false
                     });
                 }
                 else {
                     this.setState({
                         currentTemp: thermostat.currentTemp,
                         timestamp: thermostat.timestamp,
-                        currentSetpoint: thermostat.currentSetpoint
+                        currentSetpoint: thermostat.currentSetpoint,
+                        error: false
                     });
                 }
             }
             else if(response.status === 202){
+                this.setState({error: false});
                 this.callThermostatFetch();
             }
         })
         .catch((error) => {
-            // handle error
-        console.log(error);
+            this.setState({error: true});
         })
     }
     callThermostatPatch = (updatedCurrentSetpoint) => {
@@ -55,10 +58,11 @@ class App extends Component{
         .then((response) => {
             if(currentPromise === this.lastPromise.current){
                 this.callThermostatFetch();
+                this.setState({error: false});
             }
         })
         .catch((error) => {
-            console.log(error);
+            this.setState({error: true});
         });
         this.lastPromise.current = currentPromise;
     }
@@ -75,22 +79,26 @@ class App extends Component{
     
     componentDidUpdate(prevProps, prevState){
         if(prevState.currentSetpoint !== this.state.currentSetpoint){
-            console.log(this.lastPromise);
             this.callThermostatPatch(this.state.currentSetpoint);
         }
     }
     render(){
         return(
-            <div>
-                <h1 className="header-title">Thermostat</h1>
-                <ThermostatScreen 
-                currentSetpoint = {this.state.currentSetpoint}
-                currentTemp = {this.state.currentTemp}
-                timestamp = {this.state.timestamp}></ThermostatScreen>
-                <SetPointControl 
-                increase={this.increaseTempHandler} 
-                decrease={this.decreaseTempHandler}></SetPointControl>
-            </div>
+            <Fragment>
+                {
+                this.state.error ? <p>Opps dear something went wrong please try refreshing the page!!</p>:
+                    <div>
+                        <h1 className="header-title">Thermostat</h1>
+                        <ThermostatScreen 
+                        currentSetpoint = {this.state.currentSetpoint}
+                        currentTemp = {this.state.currentTemp}
+                        timestamp = {this.state.timestamp}></ThermostatScreen>
+                        <SetPointControl 
+                        increase={this.increaseTempHandler} 
+                        decrease={this.decreaseTempHandler}></SetPointControl>
+                    </div>
+                }
+            </Fragment>
         )
     }
 
